@@ -26,7 +26,6 @@
 package org.edumips64.core.fpu;
 import org.edumips64.core.*;
 import org.edumips64.core.is.*;
-import org.edumips64.utils.IrregularStringOfBitsException;
 import java.util.*;
 
 /** This class models a MIPS FPU  pipeline that supports multiple outstanding FP operations
@@ -36,12 +35,9 @@ import java.util.*;
 public class FPPipeline {
   //FPU functional units
   static class Costanti {
-    public enum FPAdderStatus {A1, A2, A3, A4};
-    public enum FPMultiplierStatus {M1, M2, M3, M4, M5, M6, M7};
-    public enum FPDividerStatus {DIVIDER};
+    public enum FPAdderStatus {A1, A2, A3, A4}
+    public enum FPMultiplierStatus {M1, M2, M3, M4, M5, M6, M7}
   }
-  public static int STRUCT_HAZARD = 0; //status constant of pipeStatus[]
-  private int pipeStatus[];
   private Divider divider;
   private Multiplier multiplier;
   private Adder adder;
@@ -60,9 +56,7 @@ public class FPPipeline {
     multiplier.reset();
     adder = new Adder();
     adder.reset();
-    entryQueue = new LinkedList<Instruction>();
-    pipeStatus = new int[1];
-    pipeStatus[STRUCT_HAZARD] = 0; // 0 means that any structural hazard at the last getCompletedInstruction() call
+    entryQueue = new LinkedList<>();
     // happened. 1 means the contrary.
     readyToExit = 0;
     reset();
@@ -243,19 +237,7 @@ public class FPPipeline {
 
   /** This method is used in  order to understand if the fpPipe is not empty and the all CPU halt are disabled*/
   public boolean isEmpty() {
-    return (nInstructions == 0) ? true : false;
-  }
-
-  /** Returns the FPPipeline status, index must be one between the status constants
-   * @return the value of the status vector. 0 means the status is false, 1 the contrary . -1 if the status doesn't exist
-   *
-   **/
-  public int getStatus(int index) {
-    if (index > -1 && index < pipeStatus.length) {
-      return pipeStatus[index];
-    }
-
-    return -1;
+    return nInstructions == 0;
   }
 
   public int getDividerCounter() {
@@ -274,11 +256,11 @@ public class FPPipeline {
 
 //---------------------- FUNCTIONAL UNITS ----------------------------------------
   interface FPFunctionalUnit {
-    public Object getFuncUnit();
-    public int putInstruction(Instruction instr, boolean simulation);
-    public Instruction getInstruction();
-    public void removeLast();
-    public void step();
+    Object getFuncUnit();
+    int putInstruction(Instruction instr, boolean simulation);
+    Instruction getInstruction();
+    void removeLast();
+    void step();
   }
 
   /** This class models the 7 steps floating point multiplier*/
@@ -286,7 +268,7 @@ public class FPPipeline {
     private Map<Costanti.FPMultiplierStatus, Instruction> multiplier;
     Multiplier() {
       //Multiplier initialization
-      multiplier = new HashMap<Costanti.FPMultiplierStatus, Instruction>();
+      multiplier = new HashMap<>();
       this.reset();
     }
 
@@ -389,7 +371,7 @@ public class FPPipeline {
   private class Adder implements FPFunctionalUnit {
     public Map<Costanti.FPAdderStatus, Instruction> adder;
     Adder() {
-      adder = new HashMap<Costanti.FPAdderStatus, Instruction>();
+      adder = new HashMap<>();
       this.reset();
     }
 
@@ -470,7 +452,7 @@ public class FPPipeline {
    *  and for this reason a structural hazard happens when a DIV.fmt would to enter the FU when
    *  another DIV.fmt is present */
   private class Divider implements FPFunctionalUnit {
-    public Instruction instr;
+    Instruction instr;
     public int counter;
     Divider() {
       this.reset();

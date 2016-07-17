@@ -638,29 +638,30 @@ public class CPU {
 
     logger.info("CPU Status: " + status.name());
 
-    boolean breaking = false;
-    if (status == CPUStatus.RUNNING) {
-      if (!pipe.isEmpty(Stage.IF)) {  //rispetto a dinmips scambia le load con le IF
-        try {
-          logger.info("Executing IF() for " + pipe.IF());
-          pipe.IF().IF();
-        } catch (BreakException exc) {
-          breaking = true;
-        }
-      }
-
-      logger.info("Moving " + pipe.IF() + " to ID");
-      pipe.setID(pipe.IF());
-      Instruction next_if = mem.getInstruction(pc);
-      logger.info("Fetched new instruction " + next_if);
-      old_pc.writeDoubleWord((pc.getValue()));
-      pc.writeDoubleWord((pc.getValue()) + 4);
-      logger.info("New Program Counter value: " + pc.toString());
-      logger.info("Putting " + next_if + "in IF.");
-      pipe.setIF(next_if);
-    } else {
+    if (status != CPUStatus.RUNNING) {
       pipe.setID(bubble);
+      return;
     }
+
+    boolean breaking = false;
+    if (!pipe.isEmpty(Stage.IF)) {  //rispetto a dinmips scambia le load con le IF
+      try {
+        logger.info("Executing IF() for " + pipe.IF());
+        pipe.IF().IF();
+      } catch (BreakException exc) {
+        breaking = true;
+      }
+    }
+
+    logger.info("Moving " + pipe.IF() + " to ID");
+    pipe.setID(pipe.IF());
+    Instruction next_if = mem.getInstruction(pc);
+    logger.info("Fetched new instruction " + next_if);
+    old_pc.writeDoubleWord((pc.getValue()));
+    pc.writeDoubleWord((pc.getValue()) + 4);
+    logger.info("New Program Counter value: " + pc.toString());
+    logger.info("Putting " + next_if + "in IF.");
+    pipe.setIF(next_if);
 
     if (breaking) {
       logger.info("Re-throwing the BREAK exception");

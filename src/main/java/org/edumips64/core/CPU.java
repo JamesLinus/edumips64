@@ -229,15 +229,13 @@ public class CPU {
     return fpPipe.isFuncUnitFilled(funcUnit, stage);
   }
 
-  /** Returns true if the pipeline is empty. In this case, if CPU is in stopping state
-   *  we can halt the pipeline. The sufficient condition in order to return true is that fpPipe doesn't work
-   *  and it hadn't issued any instrution now in the MEM stage */
+  /** Returns true if the integer pipeline and the FPU pipeline are empty, except for the IF stage (which could
+   *  have something even if the processing is stopped). */
   private boolean isPipelinesEmpty() {
-    // WB is not checked because currently this method is called before the
-    // instruction in WB is removed from the pipeline.
     return pipe.isEmptyOrBubble(Stage.ID) &&
            pipe.isEmptyOrBubble(Stage.EX) &&
            pipe.isEmptyOrBubble(Stage.MEM) &&
+           pipe.isEmptyOrBubble(Stage.WB) &&
            fpPipe.isEmpty();
   }
 

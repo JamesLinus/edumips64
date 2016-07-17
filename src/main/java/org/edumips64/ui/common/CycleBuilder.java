@@ -85,17 +85,17 @@ public class CycleBuilder {
   }
 
   public void step() {
-    Map<CPU.PipeStage, Instruction> pipeline = cpu.getPipeline();
+    Map<CPU.Stage, Instruction> pipeline = cpu.getPipeline();
     curTime = cpu.getCycles();
 
     if (oldTime != curTime) {
       if (curTime > 0) {
         int index; //used for searching instructions by serial number into "elementsList"
-        instr[0] = pipeline.get(CPU.PipeStage.IF);
-        instr[1] = pipeline.get(CPU.PipeStage.ID);
-        instr[2] = pipeline.get(CPU.PipeStage.EX);
-        instr[3] = pipeline.get(CPU.PipeStage.MEM);
-        instr[4] = pipeline.get(CPU.PipeStage.WB);
+        instr[0] = pipeline.get(CPU.Stage.IF);
+        instr[1] = pipeline.get(CPU.Stage.ID);
+        instr[2] = pipeline.get(CPU.Stage.EX);
+        instr[3] = pipeline.get(CPU.Stage.MEM);
+        instr[4] = pipeline.get(CPU.Stage.WB);
 
         // WB
         if (instr[4] != null && instr[4].getName() != " ") {

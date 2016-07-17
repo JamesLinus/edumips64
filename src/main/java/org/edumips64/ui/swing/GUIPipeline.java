@@ -40,7 +40,7 @@ public class GUIPipeline extends GUIComponent {
   private int numMultiplier;
   private int numAdder;
 
-  Map <CPU.PipeStage, Instruction> pipeline;
+  Map <CPU.Stage, Instruction> pipeline;
 
   /**
   * Set the number of multiplier latency stages.
@@ -86,11 +86,11 @@ public class GUIPipeline extends GUIComponent {
   public void update() {
     pipeline = cpu.getPipeline();
 
-    Instruction i = pipeline.get(CPU.PipeStage.IF);
-    i = pipeline.get(CPU.PipeStage.ID);
-    i = pipeline.get(CPU.PipeStage.EX);
-    i = pipeline.get(CPU.PipeStage.MEM);
-    i = pipeline.get(CPU.PipeStage.WB);
+    Instruction i = pipeline.get(CPU.Stage.IF);
+    i = pipeline.get(CPU.Stage.ID);
+    i = pipeline.get(CPU.Stage.EX);
+    i = pipeline.get(CPU.Stage.MEM);
+    i = pipeline.get(CPU.Stage.WB);
   }
 
   public void draw() {
@@ -229,35 +229,35 @@ public class GUIPipeline extends GUIComponent {
 
 
 
-      Instruction i = pipeline.get(CPU.PipeStage.IF);
+      Instruction i = pipeline.get(CPU.Stage.IF);
 
       if ((i != null) && ((i.getName() != null)) && !i.isBubble()) {
         g.setColor(new Color(config.getInt("IFColor")));
         g.fillRect(largh / 20, (alt / 2) - (alt / 12), largh / 10, alt / 6);
       }
 
-      i = pipeline.get(CPU.PipeStage.ID);
+      i = pipeline.get(CPU.Stage.ID);
 
       if ((i != null) && ((i.getName() != null)) && !i.isBubble()) {
         g.setColor(new Color(config.getInt("IDColor")));
         g.fillRect(largh * 4 / 20, (alt / 2) - (alt / 12), largh / 10, alt / 6);
       }
 
-      i = pipeline.get(CPU.PipeStage.EX);
+      i = pipeline.get(CPU.Stage.EX);
 
       if ((i != null) && ((i.getName() != null)) && !i.isBubble()) {
         g.setColor(new Color(config.getInt("EXColor")));
         g.fillRect(largh * 9 / 20, (alt / 2) - (alt * 5 / 12), largh / 10, alt / 6);
       }
 
-      i = pipeline.get(CPU.PipeStage.MEM);
+      i = pipeline.get(CPU.Stage.MEM);
 
       if ((i != null) && ((i.getName() != null)) && !i.isBubble()) {
         g.setColor(new Color(config.getInt("MEMColor")));
         g.fillRect(largh * 14 / 20, (alt / 2) - (alt / 12), largh / 10, alt / 6);
       }
 
-      i = pipeline.get(CPU.PipeStage.WB);
+      i = pipeline.get(CPU.Stage.WB);
 
       if ((i != null) && ((i.getName() != null)) && !i.isBubble()) {
         g.setColor(new Color(config.getInt("WBColor")));
@@ -346,7 +346,7 @@ public class GUIPipeline extends GUIComponent {
       FontMetrics fm1 = g.getFontMetrics(f1);
       g.setFont(f1);
       g.setColor(Color.blue);
-      Instruction i = pipeline.get(CPU.PipeStage.IF);
+      Instruction i = pipeline.get(CPU.Stage.IF);
 
       if (i != null) {
         if (i.getName() != null && !i.getName().equals(" ")) {
@@ -354,7 +354,7 @@ public class GUIPipeline extends GUIComponent {
         }
       }
 
-      i = pipeline.get(CPU.PipeStage.ID);
+      i = pipeline.get(CPU.Stage.ID);
 
       if (i != null) {
         if (i.getName() != null && !i.getName().equals(" ")) {
@@ -362,7 +362,7 @@ public class GUIPipeline extends GUIComponent {
         }
       }
 
-      i = pipeline.get(CPU.PipeStage.EX);
+      i = pipeline.get(CPU.Stage.EX);
 
       if (i != null) {
         if (i.getName() != null && !i.getName().equals(" ")) {
@@ -370,7 +370,7 @@ public class GUIPipeline extends GUIComponent {
         }
       }
 
-      i = pipeline.get(CPU.PipeStage.MEM);
+      i = pipeline.get(CPU.Stage.MEM);
 
       if (i != null) {
         if (i.getName() != null && !i.getName().equals(" ")) {
@@ -378,7 +378,7 @@ public class GUIPipeline extends GUIComponent {
         }
       }
 
-      i = pipeline.get(CPU.PipeStage.WB);
+      i = pipeline.get(CPU.Stage.WB);
 
       if (i != null) {
         if (i.getName() != null && !i.getName().equals(" ")) {

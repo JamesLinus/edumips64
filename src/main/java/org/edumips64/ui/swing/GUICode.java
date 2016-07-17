@@ -67,15 +67,15 @@ public class GUICode extends GUIComponent {
     TableColumn column4 = codePanel.theTable.getColumnModel().getColumn(4);
     column4.setCellRenderer(new MyTableCellRenderer());
 
-    Instruction ifInstruction = cpu.getPipeline().get(CPU.PipeStage.IF);
+    Instruction ifInstruction = cpu.getPipeline().get(CPU.Stage.IF);
     ifIndex = memory.getInstructionIndex(ifInstruction);
     if ((ifInstruction != null) && ifInstruction.isBubble()) {
       ifIndex = -1;
     }
-    idIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.PipeStage.ID));
-    exIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.PipeStage.EX));
-    memIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.PipeStage.MEM));
-    wbIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.PipeStage.WB));
+    idIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.Stage.ID));
+    exIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.Stage.EX));
+    memIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.Stage.MEM));
+    wbIndex = memory.getInstructionIndex(cpu.getPipeline().get(CPU.Stage.WB));
 
     A1Index = memory.getInstructionIndex(cpu.getInstructionByFuncUnit("ADDER", 1));
     A2Index = memory.getInstructionIndex(cpu.getInstructionByFuncUnit("ADDER", 2));

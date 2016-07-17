@@ -231,7 +231,7 @@ public class CPU {
 
   /** Returns true if the integer pipeline and the FPU pipeline are empty, except for the IF stage (which could
    *  have something even if the processing is stopped). */
-  private boolean isPipelinesEmpty() {
+  private boolean arePipelinesEmpty() {
     return pipe.isEmptyOrBubble(Stage.ID) &&
            pipe.isEmptyOrBubble(Stage.EX) &&
            pipe.isEmptyOrBubble(Stage.MEM) &&
@@ -514,7 +514,7 @@ public class CPU {
     pipe.removeWB();
 
     //if the pipeline is empty and it is into the stopping state (because a long latency instruction was executed) we can halt the cpu when computations finished
-    if (isPipelinesEmpty() && getStatus() == CPUStatus.STOPPING) {
+    if (arePipelinesEmpty() && getStatus() == CPUStatus.STOPPING) {
       logger.info("Pipeline is empty and we are in STOPPING --> going to HALTED.");
       setStatus(CPU.CPUStatus.HALTED);
       throw new HaltException();

@@ -306,4 +306,27 @@ public class FCSRRegister extends BitSet32 {
       }
     }
   }
+
+  public void reset() {
+    try {
+      // Reset the FCSR condition codes.
+      for (int cc = 0; cc < 8; cc++) {
+        setFCSRConditionCode(cc, 0);
+      }
+
+      // Reset the FCSR flags.
+      setFCSRFlags("V", 0);
+      setFCSRFlags("O", 0);
+      setFCSRFlags("U", 0);
+      setFCSRFlags("Z", 0);
+
+      // Reset the FCSR cause bits.
+      setFCSRCause("V", 0);
+      setFCSRCause("O", 0);
+      setFCSRCause("U", 0);
+      setFCSRCause("Z", 0);
+    } catch (IrregularStringOfBitsException ex) {
+      ex.printStackTrace();
+    }
+  }
 }

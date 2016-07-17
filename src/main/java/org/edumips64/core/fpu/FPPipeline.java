@@ -65,6 +65,7 @@ public class FPPipeline {
     pipeStatus[STRUCT_HAZARD] = 0; // 0 means that any structural hazard at the last getCompletedInstruction() call
     // happened. 1 means the contrary.
     readyToExit = 0;
+    reset();
   }
 
   public String toString() {

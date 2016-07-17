@@ -145,7 +145,6 @@ public class CPU {
     FCSR = new FCSRRegister();
     configFPExceptionsAndRM();
     fpPipe = new FPPipeline();
-    fpPipe.reset();
 
     // Pipeline initialization
     pipe = new Pipeline();

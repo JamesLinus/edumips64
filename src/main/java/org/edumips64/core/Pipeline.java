@@ -37,11 +37,31 @@ class Pipeline {
     return stageInstructionMap.get(stage);
   }
 
+  /** Removes the instuction at the given stage, returning it. */
+  Instruction remove(CPU.PipeStage stage) {
+    Instruction i = get(stage);
+    stageInstructionMap.put(stage, null);
+    return i;
+  }
+
   /**
-   * Shortcut setters/getters for the stages.
-   * Like Map.put(), setters return the previous mapping if any, or null if
-   * no mapping was in place.
+   * Shortcuts for the stages.
    */
+  Instruction removeIF() {
+    return remove(CPU.PipeStage.IF);
+  }
+  Instruction removeID() {
+    return remove(CPU.PipeStage.ID);
+  }
+  Instruction removeEX() {
+    return remove(CPU.PipeStage.EX);
+  }
+  Instruction removeMEM() {
+    return remove(CPU.PipeStage.MEM);
+  }
+  Instruction removeWB() {
+    return remove(CPU.PipeStage.WB);
+  }
   Instruction IF() {
     return get(CPU.PipeStage.IF);
   }

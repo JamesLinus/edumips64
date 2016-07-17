@@ -479,7 +479,7 @@ public class CPU {
       logger.info("Exception: " + ex.getCode());
       throw ex;
     } catch (HaltException ex) {
-      pipe.setWB(null);
+      pipe.removeWB();
       throw ex;
     } finally {
       logger.info("End of cycle " + cycles + "\n---------------------------------------------\n" + pipeLineString() + "\n");
@@ -517,7 +517,7 @@ public class CPU {
 
     // Move the instruction in WB out of the pipeline.
     logger.info("Instruction " + pipe.WB() + " has been completed. Removing it.");
-    pipe.setWB(null);
+    pipe.removeWB();
 
     //if the pipeline is empty and it is into the stopping state (because a long latency instruction was executed) we can halt the cpu when computations finished
     if (isPipelinesEmpty() && getStatus() == CPUStatus.STOPPING) {
@@ -536,8 +536,7 @@ public class CPU {
     }
 
     logger.info("Moving " + pipe.MEM() + " to WB");
-    pipe.setWB(pipe.MEM());
-    pipe.setMEM(null);
+    pipe.setWB(pipe.removeMEM());
   }
 
   private String stepEX() throws SynchronousException, HaltException, NotAlignException, TwosComplementSumException, IrregularWriteOperationException, AddressErrorException, IrregularStringOfBitsException {
@@ -595,7 +594,7 @@ public class CPU {
     logger.info("Moving " + toMove + " to MEM");
     pipe.setMEM(toMove);
     if (!shouldExecuteFP) {
-      pipe.setEX(null);
+      pipe.removeEX();
     }
 
     // Shift instructions in the fpPipe.
@@ -635,7 +634,7 @@ public class CPU {
       logger.info("Moving " + pipe.ID() + " to EX");
       pipe.setEX(pipe.ID());
     }
-    pipe.setID(null);
+    pipe.removeID();
   }
 
   private void stepIF() throws IrregularStringOfBitsException, HaltException, IrregularWriteOperationException, BreakException {
